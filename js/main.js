@@ -124,3 +124,55 @@
     
 })(jQuery);
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the form element
+    var form = document.getElementById('contactForm');
+
+    // Add event listener for form submission
+    form.addEventListener('submit', function (event) {
+        // Prevent the default form submission
+        event.preventDefault();
+
+        // Get the form data
+        var formData = new FormData(form);
+        var email = formData.get('email');
+        var message = formData.get('message');
+
+        // Submit the form using Formspree
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // console.log('Formspree response:', data);
+            alert('Message sent successfully!');
+        })
+        .catch(error => {
+            // console.error('There was an error sending the message:', error);
+            alert('Failed to send message. Please try again later.');
+        });
+
+        // Submit the form
+        form.submit();
+
+ // Scroll to the top of the page
+ window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // Optional: smooth scrolling
+});
+    });
+});
+
+
+
+
